@@ -6,7 +6,10 @@ module Hangman
 		end
 
 		def get_words
-			array_of_words = File.readlines("../5desk.txt")
+			file_path = File.join(File.dirname(__FILE__),"5desk.txt")
+		
+			puts file_path
+			array_of_words = File.readlines(file_path)
 			
 			while true
 				current_word = get_random_word(array_of_words).strip
@@ -31,9 +34,10 @@ module Hangman
 		end
 	end
 end 
-
+=begin
 include Hangman
 d = Dictionary.new
 x = d.word
 puts x.length
 puts x
+=end

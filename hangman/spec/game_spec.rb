@@ -14,6 +14,26 @@ module Hangman
 			end
 		end
 
+		context "#guess" do
+
+		end
+
+		context "#game_over" do
+			it "returns :out if out_of_turns returns true" do
+				g = Game.new
+				allow(g).to receive(:out_of_turns?).and_return(true)
+				expect(g.game_over).to eq :out
+			end
+		end
+
+		context "#game_over_message" do
+			it "returns 'Out of turns!' if #game_over returns :out" do
+				g = Game.new
+				allow(g).to receive(:game_over).and_return(:out)
+				expect(g.game_over_message).to eq "Out of turns!"
+			end
+		end
+
 		context "#out_of_turns?" do
 			it "returns false if mistakes_left is not zero" do
 				g = Game.new

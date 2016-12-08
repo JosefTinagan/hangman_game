@@ -8,19 +8,55 @@ module Hangman
 		end
 
 		def start
-
+			turns = 5
+			create_board
 			while true
+				letter_picked = ask_input
 
-				if out_of_turns?
-					game_over_message
+				if correct_letter?(letter_picked)
+					update_current_word(letter_picked)
+					guessed_letters.push(letter_picked)
+				else
+					puts "Wrong letter"
+					turns -= 1
+					@mistakes_left = turns
 				end
-			mistakes_left -= 1
+
+				if check_victory
+					puts game_over_message
+					display_current_word
+					return
+				end
+				
 			end
 		end
 
+		def correct_letter?(letter)
+			return true if secret_word.include?(letter)
+			false
+		end
+
 		def ask_input
+			puts "Mistakes left till out of turns: #{mistakes_left}"
 			puts "Enter a letter"
 			input = gets.chomp
+
+			if input_valid?(input)
+				input
+			else
+				puts "Invalid input, try again"
+				ask_input
+			end
+		end
+
+		def input_valid?(input)
+			return true if input.length == 1 && !letter_already_picked?(input)
+			false
+		end
+
+		def letter_already_picked?(input)
+			return true if guessed_letters.include?(input)
+			false
 		end
 
 		def update_current_word(letter)
@@ -52,7 +88,8 @@ module Hangman
 
 		def check_victory
 			return :win if victory?
-			return :out if out_of_turns?s
+			return :out if out_of_turns?
+			false
 		end
 
 		def victory?
@@ -60,6 +97,7 @@ module Hangman
 			puts
 			p secret_word
 			return true if current_word.join == secret_word.join
+			false
 		end
 
 		def out_of_turns?
@@ -71,9 +109,11 @@ module Hangman
 		end
 
 		def game_over_message
-			return "Out of turns!" if game_over == :out
+			#return "Out of turns!" if game_over == :out
+			return "You won!" if check_victory == :win
+			return "Out of turns" if check_victory == :out
 		end
-
 
 	end
 end
+

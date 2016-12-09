@@ -1,0 +1,2 @@
+mistakes_left,guessed_letters,secret_word,current_word
+5,by,psychiatry,__________
